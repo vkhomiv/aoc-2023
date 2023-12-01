@@ -9,12 +9,16 @@ def get_spelled_digit(calibration_value):
             return digits_map[spelled_digit]
     return None
 
+
 def get_that_digit(calibration_value):
-        if len(calibration_value) and calibration_value[0].isdigit():
-            return
+    if len(calibration_value) < 1:
+        return None
+    first_element = calibration_value[0]
+    return first_element if first_element.isdigit() else get_spelled_digit(calibration_value)
+
 
 def fix_calibration_values():
-    file = open('calibration_values.txt', 'r')
+    file = open('day1/calibration_values.txt', 'r')
     calibration_values = file.readlines()
 
     accumulator = []
@@ -22,15 +26,12 @@ def fix_calibration_values():
         first_num_str = None
         last_num_str = None
 
-        for idx, element in enumerate(calibration_value):
-            if element.isdigit():
+        for idx in range(len(calibration_value)):
+            probably_digit = get_that_digit(calibration_value[idx:])
+            if probably_digit:
+                last_num_str = probably_digit
                 if not first_num_str:
-                    first_num_str = element
-                last_num_str = element
-            elif spelled_digit := get_spelled_digit(calibration_value[idx:]):
-                if not first_num_str:
-                    first_num_str = spelled_digit
-                last_num_str = spelled_digit
+                    first_num_str = probably_digit
 
         accumulator.append(int(first_num_str + last_num_str))
         print(calibration_value, first_num_str, last_num_str)
