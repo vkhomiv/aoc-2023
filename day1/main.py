@@ -9,6 +9,9 @@ def get_spelled_digit(calibration_value):
             return digits_map[spelled_digit]
     return None
 
+def get_that_digit(calibration_value):
+        if len(calibration_value) and calibration_value[0].isdigit():
+            return
 
 def fix_calibration_values():
     file = open('calibration_values.txt', 'r')
